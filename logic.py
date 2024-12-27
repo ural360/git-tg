@@ -1,6 +1,6 @@
 from random import randint
 import requests
-
+from datetime import datetime, timedelta
 
 class Pokemon:
     pokemons = {} # { username : pokemon}
@@ -77,4 +77,43 @@ class Fighter(Pokemon):
     def info(self): # доп. задание
         return "У тебя покемон-боец \n\n" + super().info()
 
+from datetime import datetime, timedelta
+
+class Pokemon:
+    def __init__(self):
+        self.hp = 100
+        self.last_feed_time = datetime.now()  
+
+    def feed(self, feed_interval=20, hp_increase=10):
+        current_time = datetime.now()  
+        delta_time = timedelta(seconds=feed_interval)  # изменено на seconds
+        if (current_time - self.last_feed_time) > delta_time:
+            self.hp += hp_increase
+            self.last_feed_time = current_time
+            return f"Здоровье покемона увеличено. Текущее здоровье: {self.hp}"
+        else:
+            next_feed_time = self.last_feed_time + delta_time
+            return f"Следующее время кормления покемона: {next_feed_time}"
+
+class Wizard(Pokemon):
+    def feed(self):
+        feed_interval = 15  
+        hp_increase = 5    
+        return super().feed(feed_interval, hp_increase)
+
+class Fighter(Pokemon):
+    def feed(self):
+        feed_interval = 20  
+        hp_increase = 20    
+        return super().feed(feed_interval, hp_increase)
+
+
+if __name__ == "__main__":
+    pikachu = Pokemon()
+    wizard = Wizard()
+    fighter = Fighter()
+
+    print(pikachu.feed())  
+    print(wizard.feed())   
+    print(fighter.feed())  
 
